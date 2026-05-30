@@ -1,4 +1,6 @@
-const BASE = "http://localhost:5000/api";
+import { API_BASE_URL } from "../api";
+
+const BASE = `${API_BASE_URL}/api`;
 
 export const api = {
   // Admin Auth
