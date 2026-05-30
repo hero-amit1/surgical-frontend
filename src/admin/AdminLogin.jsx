@@ -6,7 +6,7 @@ import {
     Lock,
     Eye,
     EyeOff,
-    LogIn,
+    LogIn
 } from "lucide-react";
 
 import { api } from "./adminApi";
@@ -28,28 +28,37 @@ export default function AdminLogin() {
     const handleLogin = async (e) => {
         e.preventDefault();
 
+        if (loading) return; // prevent double submit
+
         setLoading(true);
         setError("");
 
         try {
-            const res = await api.login({ email, password });
+            const res = await api.login({
+                email: email.trim(),
+                password
+            });
 
-            if (res.token) {
+            if (res?.token) {
                 sessionStorage.setItem("token", res.token);
                 navigate("/admin");
             } else {
-                setError("Invalid email or password");
+                setError(res?.error || "Invalid email or password");
             }
         } catch (err) {
-            setError("Login failed. Please try again.");
+            setError(
+                err?.response?.data?.error ||
+                "Login failed. Please try again."
+            );
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
     };
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-slate-200 flex items-center justify-center p-4">
             <div className="w-full max-w-5xl grid lg:grid-cols-2 bg-white rounded-[35px] overflow-hidden shadow-2xl">
+
                 {/* LEFT SIDE */}
                 <div className="hidden lg:flex flex-col justify-center bg-black text-white p-14 relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-full opacity-10">
@@ -67,40 +76,21 @@ export default function AdminLogin() {
                         </h1>
 
                         <p className="text-gray-300 text-lg leading-relaxed">
-                            Securely manage products, inventory, categories and dashboard
-                            operations from one modern admin system.
+                            Securely manage products, inventory, categories and dashboard operations.
                         </p>
-
-                        <div className="mt-10 space-y-4">
-                            <div className="flex items-center gap-3">
-                                <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                                <p>Secure Authentication</p>
-                            </div>
-
-                            <div className="flex items-center gap-3">
-                                <div className="w-3 h-3 rounded-full bg-blue-400"></div>
-                                <p>Product Management System</p>
-                            </div>
-
-                            <div className="flex items-center gap-3">
-                                <div className="w-3 h-3 rounded-full bg-purple-400"></div>
-                                <p>Inventory Control Dashboard</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 {/* RIGHT SIDE */}
                 <div className="p-8 md:p-14 flex flex-col justify-center">
-                    <div className="mb-10">
-                        <h2 className="text-4xl font-bold text-gray-900 mb-3">
-                            Welcome Back
-                        </h2>
 
-                        <p className="text-gray-500">
-                            Login to access the admin dashboard
-                        </p>
-                    </div>
+                    <h2 className="text-4xl font-bold text-gray-900 mb-3">
+                        Welcome Back
+                    </h2>
+
+                    <p className="text-gray-500 mb-8">
+                        Login to access admin dashboard
+                    </p>
 
                     {/* ERROR */}
                     {error && (
@@ -110,6 +100,7 @@ export default function AdminLogin() {
                     )}
 
                     <form onSubmit={handleLogin} className="space-y-6">
+
                         {/* EMAIL */}
                         <div>
                             <label className="text-sm font-semibold text-gray-700">
@@ -117,17 +108,14 @@ export default function AdminLogin() {
                             </label>
 
                             <div className="relative mt-2">
-                                <Mail
-                                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-                                    size={20}
-                                />
+                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
 
                                 <input
                                     type="email"
                                     placeholder="admin@example.com"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full border border-gray-300 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:ring-2 focus:ring-black transition"
+                                    className="w-full border border-gray-300 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:ring-2 focus:ring-black"
                                     required
                                 />
                             </div>
@@ -140,17 +128,14 @@ export default function AdminLogin() {
                             </label>
 
                             <div className="relative mt-2">
-                                <Lock
-                                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-                                    size={20}
-                                />
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
 
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     placeholder="Enter password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full border border-gray-300 rounded-2xl pl-12 pr-14 py-4 focus:outline-none focus:ring-2 focus:ring-black transition"
+                                    className="w-full border border-gray-300 rounded-2xl pl-12 pr-14 py-4 focus:outline-none focus:ring-2 focus:ring-black"
                                     required
                                 />
 
@@ -168,7 +153,7 @@ export default function AdminLogin() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-black hover:bg-gray-800 text-white py-4 rounded-2xl font-semibold text-lg flex items-center justify-center gap-3 transition-all duration-300 disabled:bg-gray-400"
+                            className="w-full bg-black hover:bg-gray-800 text-white py-4 rounded-2xl font-semibold text-lg flex items-center justify-center gap-3 disabled:opacity-60"
                         >
                             {loading ? (
                                 "Signing In..."
@@ -181,9 +166,8 @@ export default function AdminLogin() {
                         </button>
                     </form>
 
-                    {/* FOOTER */}
                     <div className="mt-10 text-center text-sm text-gray-400">
-                        © 2026 Surgical Admin System. All rights reserved.
+                        © 2026 Surgical Admin System
                     </div>
                 </div>
             </div>

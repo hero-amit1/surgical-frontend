@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "../api";
 
-const BASE = `${API_BASE_URL}/api`;
+const BASE = `${API_BASE_URL}`;
 
 export const api = {
   // Admin Auth
@@ -13,7 +13,7 @@ export const api = {
 
   getProfile: (token) =>
     fetch(`${BASE}/admin/profile`, {
-      headers: { Authorization: token },
+      headers: { Authorization: `Bearer ${token}` },
     }).then((r) => r.json()),
 
   updateProfile: (data, token) =>
@@ -21,7 +21,7 @@ export const api = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     }).then((r) => r.json()),
@@ -31,7 +31,7 @@ export const api = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     }).then((r) => r.json()),
@@ -48,7 +48,7 @@ export const api = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     }).then((r) => r.json()),
@@ -58,7 +58,7 @@ export const api = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     }).then((r) => r.json()),
@@ -66,6 +66,6 @@ export const api = {
   deleteProduct: (id, token) =>
     fetch(`${BASE}/products/${id}`, {
       method: "DELETE",
-      headers: { Authorization: token },
+      headers: { Authorization: `Bearer ${token}` },
     }).then((r) => r.json()),
 };
