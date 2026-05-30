@@ -1,6 +1,8 @@
 import { API_BASE_URL } from "../api";
 
-const BASE = `${API_BASE_URL}`;
+// API_BASE_URL should point to backend base (e.g. https://...onrender.com)
+// Admin routes are mounted under /api/admin on backend.
+const BASE = `${API_BASE_URL}/api`;
 
 export const api = {
   // Admin Auth
