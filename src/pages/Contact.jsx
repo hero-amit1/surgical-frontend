@@ -85,19 +85,20 @@ export default function Contact() {
                             icon: IconPin,
                             title: "Visit Us",
                             lines: [
-                                "Tripureshwor-11, Sajan Goth Building",
-                                "3rd Floor, Kathmandu, Nepal",
+                                "30 N Gould St Ste R",
+                                "Sheridan, WY 82801",
+                                "United States",
                             ],
                         },
                         {
                             icon: IconPhone,
                             title: "Call Us",
-                            lines: ["+977-1-5313068"],
+                            lines: ["+13075334504"],
                         },
                         {
                             icon: IconMail,
                             title: "Email",
-                            lines: ["info@aarnavsurgical.com"],
+                            lines: ["info@securemeditechglobal.com"],
                         },
                     ].map((item, i) => (
                         <motion.div
@@ -212,45 +213,7 @@ export default function Contact() {
             </section>
 
             {/* MAP SECTION */}
-            <section className="py-20 bg-slate-50">
-                <div className="container mx-auto px-4 text-center">
 
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
-                        className="text-3xl font-bold text-slate-900"
-                    >
-                        Visit Our Office
-                    </motion.h2>
-
-                    <motion.p
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        transition={{ delay: 0.2, duration: 0.6 }}
-                        viewport={{ once: true }}
-                        className="text-slate-500 mt-2"
-                    >
-                        Tripureshwor, Kathmandu, Nepal
-                    </motion.p>
-
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.3, duration: 0.6 }}
-                        viewport={{ once: true }}
-                        className="mt-8 rounded-2xl overflow-hidden shadow-xl border"
-                    >
-                        <iframe
-                            title="map"
-                            className="w-full h-[400px]"
-                            loading="lazy"
-                            src="https://www.google.com/maps?q=Tripureshwor%20Kathmandu&output=embed"
-                        />
-                    </motion.div>
-                </div>
-            </section>
         </>
     );
 }

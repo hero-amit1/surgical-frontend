@@ -45,6 +45,18 @@ export const api = {
   getProduct: (id) =>
     fetch(`${BASE}/products/${id}`).then((r) => r.json()),
 
+  uploadImage: async (file) => {
+    const fd = new FormData();
+    fd.append('image', file);
+
+    const res = await fetch(`${API_BASE_URL}/api/uploads/image`, {
+      method: 'POST',
+      body: fd,
+    });
+
+    return res.json();
+  },
+
   addProduct: (data, token) =>
     fetch(`${BASE}/products`, {
       method: "POST",
@@ -54,6 +66,7 @@ export const api = {
       },
       body: JSON.stringify(data),
     }).then((r) => r.json()),
+
 
   updateProduct: (id, data, token) =>
     fetch(`${BASE}/products/${id}`, {

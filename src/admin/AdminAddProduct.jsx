@@ -26,6 +26,7 @@ export default function AdminAddProduct() {
     price: "",
     category: "",
     brand: "",
+    imageFile: null,
     image: "",
     stock: "",
     sku: "",
@@ -76,14 +77,11 @@ export default function AdminAddProduct() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setForm({
-        ...form,
-        image: reader.result,
-      });
-    };
-    reader.readAsDataURL(file);
+    setForm({
+      ...form,
+      imageFile: file,
+      image: "",
+    });
   };
 
   const submit = async (e) => {
@@ -99,15 +97,34 @@ export default function AdminAddProduct() {
         !form.description ||
         !form.price ||
         !form.category ||
-        !form.image
+        !form.imageFile
       ) {
         setError("Please fill all required fields and upload an image");
         setLoading(false);
         return;
       }
 
+      // 1) Upload image to Cloudinary via backend
+      const uploadRes = await api.uploadImage(form.imageFile);
+      if (uploadRes?.error || !uploadRes?.url) {
+        setError(uploadRes?.error || "Failed to upload image");
+        setLoading(false);
+        return;
+      }
+
+      // 2) Save product with Cloudinary URL
       const productData = {
-        ...form,
+        name: form.name,
+        slug: form.slug,
+        description: form.description,
+        price: form.price,
+        category: form.category,
+        brand: form.brand,
+        image: uploadRes.url,
+        stock: form.stock,
+        sku: form.sku,
+        featured: form.featured,
+        trending: form.trending,
         specifications: form.specifications
           ? form.specifications.split("\n")
           : [],
@@ -142,9 +159,7 @@ export default function AdminAddProduct() {
             Back to dashboard
           </Link>
 
-          <h1 className="text-4xl font-bold text-gray-900">
-            Add New Product
-          </h1>
+          <h1 className="text-4xl font-bold text-gray-900">Add New Product</h1>
           <p className="text-gray-500 mt-2">
             Create and manage your surgical products easily.
           </p>
@@ -165,9 +180,7 @@ export default function AdminAddProduct() {
               <div className="bg-white rounded-3xl shadow-sm p-6 border border-gray-200">
                 <div className="flex items-center gap-3 mb-6">
                   <Package className="w-6 h-6 text-black" />
-                  <h2 className="text-2xl font-semibold">
-                    Product Information
-                  </h2>
+                  <h2 className="text-2xl font-semibold">Product Information</h2>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-5">
@@ -178,7 +191,6 @@ export default function AdminAddProduct() {
 
                     <div className="relative mt-2">
                       <Package className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
-
                       <input
                         type="text"
                         name="name"
@@ -198,7 +210,6 @@ export default function AdminAddProduct() {
 
                     <div className="relative mt-2">
                       <Tag className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
-
                       <input
                         type="text"
                         name="slug"
@@ -218,7 +229,6 @@ export default function AdminAddProduct() {
 
                   <div className="relative mt-2">
                     <FileText className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
-
                     <textarea
                       name="description"
                       value={form.description}
@@ -236,9 +246,7 @@ export default function AdminAddProduct() {
               <div className="bg-white rounded-3xl shadow-sm p-6 border border-gray-200">
                 <div className="flex items-center gap-3 mb-6">
                   <Boxes className="w-6 h-6 text-black" />
-                  <h2 className="text-2xl font-semibold">
-                    Category & Brand
-                  </h2>
+                  <h2 className="text-2xl font-semibold">Category & Brand</h2>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-5">
@@ -255,16 +263,10 @@ export default function AdminAddProduct() {
                       required
                     >
                       <option value="">Select Category</option>
-                      <option value="Medical Equipments">
-                        Medical Equipments
-                      </option>
-                      <option value="Laboratory Equipments">
-                        Laboratory Equipments
-                      </option>
+                      <option value="Medical Equipments">Medical Equipments</option>
+                      <option value="Laboratory Equipments">Laboratory Equipments</option>
                       <option value="Surgical">Surgical</option>
-                      <option value="Orthopedic Products">
-                        Orthopedic Products
-                      </option>
+                      <option value="Orthopedic Products">Orthopedic Products</option>
                       <option value="PPE">PPE</option>
                       <option value="Gloves">Gloves</option>
                       <option value="Sanitizers">Sanitizers</option>
@@ -302,9 +304,7 @@ export default function AdminAddProduct() {
               <div className="bg-white rounded-3xl shadow-sm p-6 border border-gray-200">
                 <div className="flex items-center gap-3 mb-6">
                   <DollarSign className="w-6 h-6 text-black" />
-                  <h2 className="text-2xl font-semibold">
-                    Pricing & Inventory
-                  </h2>
+                  <h2 className="text-2xl font-semibold">Pricing & Inventory</h2>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-5">
@@ -312,7 +312,6 @@ export default function AdminAddProduct() {
                     <label className="text-sm font-medium text-gray-700">
                       Price *
                     </label>
-
                     <input
                       type="number"
                       name="price"
@@ -328,7 +327,6 @@ export default function AdminAddProduct() {
                     <label className="text-sm font-medium text-gray-700">
                       Stock
                     </label>
-
                     <input
                       type="number"
                       name="stock"
@@ -343,7 +341,6 @@ export default function AdminAddProduct() {
                     <label className="text-sm font-medium text-gray-700">
                       SKU
                     </label>
-
                     <input
                       type="text"
                       name="sku"
@@ -414,9 +411,7 @@ export default function AdminAddProduct() {
                   <label className="flex items-center justify-between bg-gray-50 border rounded-2xl p-4 cursor-pointer">
                     <div className="flex items-center gap-3">
                       <Star className="w-5 h-5 text-yellow-500" />
-                      <span className="font-medium">
-                        Featured Product
-                      </span>
+                      <span className="font-medium">Featured Product</span>
                     </div>
 
                     <input
@@ -460,3 +455,4 @@ export default function AdminAddProduct() {
     </div>
   );
 }
+

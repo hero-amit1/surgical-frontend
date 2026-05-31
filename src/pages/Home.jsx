@@ -9,9 +9,9 @@ import {
     ChevronLeft,
     ChevronRight,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
 import { API_BASE_URL } from "../api";
-
+import { Reveal } from "../components/motion-primitives";
 /* ---------------- DATA ---------------- */
 const categories = [
     { icon: FlaskConical, label: "Laboratory" },
@@ -31,7 +31,7 @@ const slides = [
     {
         eyebrow: "New Arrival",
         title: "Medical Equipments",
-        desc: "Reliable hospital-grade solutions across Nepal.",
+        desc: "Reliable hospital-grade solutions across Global.",
         image:
             "https://images.unsplash.com/photo-1581595220892-b0739db3ba8c?auto=format&fit=crop&w=2000&q=80",
     },
@@ -42,8 +42,24 @@ const slides = [
         image:
             "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=2000&q=80",
     },
-];
 
+    // NEW SLIDES
+
+    {
+        eyebrow: "Manufacturing",
+        title: "Global OEM & Contract Manufacturing Expert",
+        desc: "End-to-end OEM, ODM, and contract manufacturing solutions for medical products worldwide.",
+        image:
+            "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=2000&q=80",
+    },
+    {
+        eyebrow: "Import Partner",
+        title: "Your Trusted Import Partner",
+        desc: "Seamless import solutions for medical and laboratory equipment across global markets.",
+        image:
+            "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2000&q=80",
+    },
+];
 const medicalProducts = [
     {
         name: "Patient Monitor",
@@ -66,16 +82,48 @@ const medicalProducts = [
             "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=800&q=80",
     },
 ];
+function InfiniteCounter({ value, suffix }) {
+    const motionValue = useMotionValue(0);
+    const rounded = useTransform(motionValue, (v) => Math.floor(v));
+    const [display, setDisplay] = useState(0);
+
+    useEffect(() => {
+        const controls = animate(motionValue, value, {
+            duration: 2,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "reverse",
+            onUpdate: (v) => setDisplay(Math.floor(v)),
+        });
+
+        return () => controls.stop();
+    }, [value]);
+
+    return <span>{display}{suffix}</span>;
+}
+
 
 /* ---------------- PAGE ---------------- */
+
+
 export default function Home() {
     return (
         <div className="overflow-x-hidden">
-            <HeroSection />
-            <WelcomeSection />
-            <ProductSection />
-            <StatsSection />
-            <CTASection />
+            <Reveal>
+                <HeroSection />
+            </Reveal>
+            <Reveal delay={0.05}>
+                <WelcomeSection />
+            </Reveal>
+            <Reveal delay={0.1}>
+                <ProductSection />
+            </Reveal>
+            <Reveal delay={0.15}>
+                <StatsSection />
+            </Reveal>
+            <Reveal delay={0.2}>
+                <CTASection />
+            </Reveal>
         </div>
     );
 }
@@ -158,8 +206,9 @@ function HeroSection() {
                             <motion.div
                                 className="h-16 w-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center relative overflow-hidden group"
                                 whileHover={{
-                                    boxShadow: "0 0 30px rgba(15, 94, 255, 0.5)",
-                                    backgroundColor: "rgba(15, 94, 255, 0.3)",
+                                    boxShadow: "0 0 30px rgba(16, 185, 129, 0.45)",
+                                    backgroundColor: "rgba(16, 185, 129, 0.25)",
+
                                 }}
                                 transition={{ duration: 0.3 }}
                             >
@@ -198,7 +247,8 @@ function HeroSection() {
                             to="/products"
                         >
                             <motion.span
-                                className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-primary opacity-0"
+                                className="absolute inset-0 bg-gradient-to-r from-accentGreen-600 to-primary opacity-0"
+
                                 whileHover={{ opacity: 1 }}
                                 transition={{ duration: 0.3 }}
                             />
@@ -235,10 +285,11 @@ function HeroSection() {
                 transition={{ duration: 0.2 }}
             >
                 <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-primary to-indigo-500 opacity-0"
+                    className="absolute inset-0 bg-gradient-to-r from-primary to-accentGreen-500 opacity-0"
                     whileHover={{ opacity: 0.15 }}
                     transition={{ duration: 0.3 }}
                 />
+
                 <motion.div
                     whileHover={{ x: -4 }}
                     transition={{ duration: 0.2 }}
@@ -256,10 +307,11 @@ function HeroSection() {
                 transition={{ duration: 0.2 }}
             >
                 <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-primary to-indigo-500 opacity-0"
+                    className="absolute inset-0 bg-gradient-to-r from-primary to-accentGreen-500 opacity-0"
                     whileHover={{ opacity: 0.15 }}
                     transition={{ duration: 0.3 }}
                 />
+
                 <motion.div
                     whileHover={{ x: 4 }}
                     transition={{ duration: 0.2 }}
@@ -306,7 +358,7 @@ function WelcomeSection() {
                         transition={{ delay: 0.1 }}
                         viewport={{ once: true }}
                     >
-                        Empowering Healthcare in Nepal
+                        Global Medical Contract Manufacturing & Healthcare Supply
                     </motion.h2>
 
                     <motion.p
@@ -353,10 +405,12 @@ function WelcomeSection() {
                     className="relative"
                 >
                     <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-primary/20 to-indigo-500/20 rounded-2xl blur-xl"
+                        className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accentGreen-500/20 rounded-2xl blur-xl"
+
                         animate={{ scale: [1, 1.1, 1] }}
                         transition={{ duration: 3, repeat: Infinity }}
                     />
+
                     <img
                         src="https://www.aarnavsurgical.com/wp-content/uploads/2024/09/intro__design.jpg"
                         className="rounded-2xl shadow-2xl relative"
@@ -485,15 +539,16 @@ function ProductSection() {
 /* ---------------- STATS ---------------- */
 function StatsSection() {
     const stats = [
-        { n: "10+", l: "Years Experience" },
-        { n: "500+", l: "Clients" },
-        { n: "100+", l: "Products" },
-        { n: "24/7", l: "Support" },
+        { n: 10, suffix: "+", l: "Years Experience" },
+        { n: 500, suffix: "+", l: "Clients" },
+        { n: 100, suffix: "+", l: "Products" },
+        { n: 24, suffix: "/7", l: "Support" },
     ];
 
     return (
         <section className="bg-slate-900 text-white py-20 overflow-hidden">
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 text-center gap-10">
+
                 {stats.map((s, i) => (
                     <motion.div
                         key={i}
@@ -504,17 +559,17 @@ function StatsSection() {
                         viewport={{ once: true }}
                         className="text-center"
                     >
-                        <motion.h3
-                            className="text-5xl font-bold text-primary"
-                            whileInView={{ scale: [1, 1.15, 1] }}
-                            transition={{ delay: i * 0.1 + 0.3, duration: 0.8 }}
-                            viewport={{ once: true }}
-                        >
-                            {s.n}
-                        </motion.h3>
+                        <h3 className="text-5xl font-bold text-primary">
+                            <InfiniteCounter
+                                value={s.n}
+                                suffix={s.suffix}
+                            />
+                        </h3>
+
                         <p className="text-white/70 mt-2">{s.l}</p>
                     </motion.div>
                 ))}
+
             </div>
         </section>
     );
@@ -526,8 +581,9 @@ function CTASection() {
         <section className="relative py-28 bg-slate-900 text-white overflow-hidden">
 
             {/* background glow */}
-            <div className="absolute -top-20 -left-20 h-72 w-72 bg-blue-500/20 blur-3xl rounded-full animate-pulse" />
-            <div className="absolute -bottom-20 -right-20 h-72 w-72 bg-indigo-500/20 blur-3xl rounded-full animate-pulse" />
+            <div className="absolute -top-20 -left-20 h-72 w-72 bg-primary/20 blur-3xl rounded-full animate-pulse" />
+            <div className="absolute -bottom-20 -right-20 h-72 w-72 bg-accentGreen-500/20 blur-3xl rounded-full animate-pulse" />
+
 
             <div className="container mx-auto px-4 text-center relative">
 
@@ -550,7 +606,7 @@ function CTASection() {
                     viewport={{ once: true }}
                     className="mt-4 text-white/70 max-w-xl mx-auto"
                 >
-                    Contact us for reliable surgical, laboratory, and medical solutions across Nepal.
+                    Contact us for reliable surgical, laboratory, and medical solutions across Global.
                 </motion.p>
 
                 {/* BUTTONS */}

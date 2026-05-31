@@ -9,10 +9,11 @@
 
 /* ---------------- BASE BODY ---------------- */
 body {
-    @apply bg-slate-50 text-slate-900 antialiased;
+    @apply bg-sky-50 text-slate-900 antialiased;
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
         Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
 }
+
 
 /* ---------------- SMOOTH SCROLL ---------------- */
 html {
@@ -21,9 +22,11 @@ html {
 
 /* ---------------- TEXT SELECTION ---------------- */
 ::selection {
-    background-color: #0f172a;
+    background-color: #059669;
+    /* green */
     color: white;
 }
+
 
 /* ---------------- CUSTOM SCROLLBAR ---------------- */
 ::-webkit-scrollbar {
@@ -35,13 +38,15 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #0f172a;
+    background: #059669;
     border-radius: 10px;
 }
 
+
 ::-webkit-scrollbar-thumb:hover {
-    background: #334155;
+    background: #047857;
 }
+
 
 /* ---------------- LINKS ---------------- */
 a {

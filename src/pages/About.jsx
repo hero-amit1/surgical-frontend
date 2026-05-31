@@ -43,7 +43,7 @@ export default function About() {
         <>
             <PageHero
                 title="About Us"
-                subtitle="A trusted supplier of high-grade medical, surgical and laboratory equipment in Nepal."
+                subtitle="A trusted supplier of high-grade medical, surgical and laboratory equipment Across The World."
             />
 
             <section className="container mx-auto px-4 py-16 grid md:grid-cols-2 gap-12 items-center">
@@ -85,10 +85,13 @@ export default function About() {
                         transition={{ delay: 0.4 }}
                         className="mt-5 text-slate-600 leading-relaxed"
                     >
-                        Aarnav Surgical House, located in Tripureshwor, Kathmandu, is a trusted supplier specializing in
-                        a wide range of medical, surgical, and laboratory equipment. We supply hospitals, laboratories
-                        and healthcare professionals across Nepal with the latest and most reliable products from
-                        renowned global brands.
+                        Secure Meditech Global LLC is an international healthcare trading and contract manufacturing company dedicated to strengthening global healthcare supply chains.
+
+                        The company works closely with certified manufacturers, distributors, hospitals, and healthcare procurement partners to deliver reliable medical consumables and equipment across international markets.
+
+                        Through a strategic sourcing network spanning Asia, Europe, and North America, Secure Meditech Global LLC enables efficient manufacturing partnerships, compliant sourcing, and structured global distribution.
+
+                        Our focus is on building long-term healthcare partnerships through transparency, regulatory compliance, and operational excellence.
                     </motion.p>
 
                     <motion.ul
@@ -99,10 +102,13 @@ export default function About() {
                         viewport={{ once: true }}
                     >
                         {[
-                            'Authorized distributor for leading brands',
-                            'Pan-Nepal delivery & installation',
-                            'After-sales service and training',
-                            'Genuine products with warranty',
+                            'OEM Manufacturing / ODM Product Development',
+                            'Private Label Medical Products',
+                            'International Tender Support',
+                            'Regulatory Consulting',
+                            'Import-Export Support',
+                            'Global Logistics Management',
+                            'Contract Manufacturing',
                         ].map((t) => (
                             <motion.li
                                 key={t}
