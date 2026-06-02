@@ -19,7 +19,7 @@ const categories = [
     { icon: Activity, label: "Equipments" },
     { icon: Scissors, label: "Surgical" },
 ];
-
+import aboutImg from "../assets/about.png";
 const slides = [
     {
         eyebrow: "Featured",
@@ -412,7 +412,8 @@ function WelcomeSection() {
                     />
 
                     <img
-                        src="https://www.aarnavsurgical.com/wp-content/uploads/2024/09/intro__design.jpg"
+                        src={aboutImg}
+                        alt="About"
                         className="rounded-2xl shadow-2xl relative"
                     />
                 </motion.div>

@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import { api } from "./adminApi";
+import { categoryOptions, getCategoryMeta } from "./productMeta";
 
 export default function AdminAddProduct() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ export default function AdminAddProduct() {
     description: "",
     price: "",
     category: "",
+    subcategory: "",
     brand: "",
     imageFile: null,
     image: "",
@@ -37,6 +39,10 @@ export default function AdminAddProduct() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const categoryMeta = getCategoryMeta(form.category);
+  const brandOptions = categoryMeta.brands;
+  const subcategoryOptions = categoryMeta.subcategories;
 
   const token = sessionStorage.getItem("token");
 
@@ -51,6 +57,16 @@ export default function AdminAddProduct() {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+
+    if (name === "category") {
+      setForm({
+        ...form,
+        category: value,
+        brand: "",
+        subcategory: "",
+      });
+      return;
+    }
 
     setForm({
       ...form,
@@ -97,7 +113,8 @@ export default function AdminAddProduct() {
         !form.description ||
         !form.price ||
         !form.category ||
-        !form.imageFile
+        !form.imageFile ||
+        (subcategoryOptions.length > 0 && !form.subcategory)
       ) {
         setError("Please fill all required fields and upload an image");
         setLoading(false);
@@ -119,6 +136,7 @@ export default function AdminAddProduct() {
         description: form.description,
         price: form.price,
         category: form.category,
+        subcategory: form.subcategory,
         brand: form.brand,
         image: uploadRes.url,
         stock: form.stock,
@@ -263,13 +281,11 @@ export default function AdminAddProduct() {
                       required
                     >
                       <option value="">Select Category</option>
-                      <option value="Medical Equipments">Medical Equipments</option>
-                      <option value="Laboratory Equipments">Laboratory Equipments</option>
-                      <option value="Surgical">Surgical</option>
-                      <option value="Orthopedic Products">Orthopedic Products</option>
-                      <option value="PPE">PPE</option>
-                      <option value="Gloves">Gloves</option>
-                      <option value="Sanitizers">Sanitizers</option>
+                      {categoryOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -278,24 +294,62 @@ export default function AdminAddProduct() {
                       Brand
                     </label>
 
-                    <select
-                      name="brand"
-                      value={form.brand}
-                      onChange={handleChange}
-                      className="w-full mt-2 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
-                    >
-                      <option value="">Select Brand</option>
-                      <option value="Remi">Remi</option>
-                      <option value="Qualigens">Qualigens</option>
-                      <option value="Himedia">Himedia</option>
-                      <option value="Diatron">Diatron</option>
-                      <option value="Analyticon">Analyticon</option>
-                      <option value="Kapitol">Kapitol</option>
-                      <option value="Sinocare">Sinocare</option>
-                      <option value="Sartorius">Sartorius</option>
-                      <option value="Agappe">Agappe</option>
-                      <option value="Radiant">Radiant</option>
-                    </select>
+                    {brandOptions.length > 0 ? (
+                      <select
+                        name="brand"
+                        value={form.brand}
+                        onChange={handleChange}
+                        className="w-full mt-2 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                      >
+                        <option value="">Select Brand</option>
+                        {brandOptions.map((brand) => (
+                          <option key={brand} value={brand}>
+                            {brand}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type="text"
+                        name="brand"
+                        value={form.brand}
+                        onChange={handleChange}
+                        placeholder="Enter brand"
+                        className="w-full mt-2 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                      />
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-gray-700">
+                      Subcategory
+                    </label>
+
+                    {subcategoryOptions.length > 0 ? (
+                      <select
+                        name="subcategory"
+                        value={form.subcategory}
+                        onChange={handleChange}
+                        className="w-full mt-2 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                        required
+                      >
+                        <option value="">Select Subcategory</option>
+                        {subcategoryOptions.map((subcategory) => (
+                          <option key={subcategory} value={subcategory}>
+                            {subcategory}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type="text"
+                        name="subcategory"
+                        value={form.subcategory}
+                        onChange={handleChange}
+                        placeholder="Enter subcategory"
+                        className="w-full mt-2 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                      />
+                    )}
                   </div>
                 </div>
               </div>

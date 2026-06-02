@@ -55,7 +55,7 @@ export default function Footer() {
                         </h2>
 
                         <p className="text-xs tracking-[0.3em] text-primary mt-1 font-semibold">
-                            SURGICAL HOUSE PVT. LTD.
+                            Your Manufacturing Partner
                         </p>
 
                         <p className="mt-6 text-slate-400 leading-relaxed text-sm">

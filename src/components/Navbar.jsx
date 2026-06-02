@@ -141,7 +141,7 @@ export default function Navbar() {
                                 SECURE MEDITECH GLOBAL
                             </div>
                             <div className="text-[10px] tracking-widest text-slate-500 font-semibold">
-                                SURGICAL HOUSE
+                                Your Manufacturing Partner
                             </div>
                         </div>
                     </Link>

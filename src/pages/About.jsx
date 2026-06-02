@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import PageHero from "../components/PageHero";
+import aboutImg from "../assets/about.png";
 
 function CheckIcon(props) {
     return (
@@ -52,7 +53,7 @@ export default function About() {
                     whileInView={{ opacity: 1, scale: 1, x: 0 }}
                     transition={{ duration: 0.7 }}
                     viewport={{ once: true }}
-                    src="https://www.aarnavsurgical.com/wp-content/uploads/2024/09/intro__design.jpg"
+                    src={aboutImg}
                     alt="Aarnav Surgical"
                     className="rounded-2xl shadow-xl"
                 />
